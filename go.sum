@@ -9,8 +9,8 @@ github.com/golang/mock v1.1.1/go.mod h1:oTYuIxOrZwtPieC+H1uAHpcLFnEyAGVDL/k47Jfb
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/golang/protobuf v1.3.1 h1:YF8+flBXS5eO826T4nzqPrxfhQThhXl0YzfuUPu4SBg=
 github.com/golang/protobuf v1.3.1/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
-github.com/googleapis/gax-go v1.0.3 h1:9dMLqhaibYONnDRcnHdUs9P8Mw64jLlZTYlDe3leBtQ=
-github.com/googleapis/gax-go v1.0.3/go.mod h1:QyXYajJFdARxGzjwUfbDFIse7Spkw81SJ4LrBJXtlQ8=
+github.com/googleapis/gax-go v1.0.2 h1:uAIVChYhGJGgBQu94nCa3LLsrwxub/3AhbfhDWue8rs=
+github.com/googleapis/gax-go v1.0.2/go.mod h1:v2eZhQtr8ifqA4cZIskVgQZ1FwEN4gDW0C++kU5/H7Y=
 github.com/googleapis/gax-go/v2 v2.0.2 h1:/rNgUniLy2vDXiK2xyJOcirGpC3G99dtK1NWx26WZ8Y=
 github.com/googleapis/gax-go/v2 v2.0.2/go.mod h1:LLvjysVCY1JZeum8Z6l8qUty8fiNwE08qbEPm1M08qg=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
