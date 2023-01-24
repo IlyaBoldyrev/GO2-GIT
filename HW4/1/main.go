@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
 )
 
 func main() {
 	var (
-		j     int
-		wg    sync.WaitGroup
-		wp    = make(chan int, 8)
-		mutex sync.Mutex
-		arr   = make([]int, 0)
+		j   int64
+		wg  sync.WaitGroup
+		wp  = make(chan int, 8)
+		arr = make([]int, 0)
 	)
 	for k := 0; k < 1000; k++ { // тысяча проверок
 		j = 0
@@ -23,9 +23,7 @@ func main() {
 					<-wp
 					wg.Done()
 				}()
-				mutex.Lock()
-				j++
-				mutex.Unlock()
+				atomic.AddInt64(&j, 1)
 			}()
 		}
 		wg.Wait()
