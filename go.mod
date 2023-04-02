@@ -2,7 +2,10 @@ module github.com/IlyaBoldyrev/GO2-GIT
 
 go 1.19
 
-require github.com/googleapis/gax-go v1.0.2
+require (
+	github.com/googleapis/gax-go v1.0.2
+	golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f
+)
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect

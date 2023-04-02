@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"golang.org/x/sync/errgroup"
 	"os"
 )
 
@@ -12,48 +13,6 @@ type myFile struct {
 	Path string
 	Done bool
 }
-
-/*func showDoubles(allFiles []myFile) error {
-	for i, v := range allFiles {
-		for j := i + 1; j < len(allFiles); j++ {
-			if v.Name == allFiles[j].Name && v.Size == allFiles[j].Size {
-				if !v.Outputed {
-					fmt.Println(v.Path)
-					v.Outputed = true
-				}
-				if !allFiles[j].Outputed {
-					fmt.Println(allFiles[j].Path)
-					allFiles[j].Outputed = true
-				}
-			}
-		}
-	}
-	return nil
-}
-
-func deleteDoubles(allFiles []myFile) error {
-	for i, v := range allFiles {
-		for j := i + 1; j < len(allFiles); j++ {
-			if v.Name == allFiles[j].Name && v.Size == allFiles[j].Size {
-				if !v.Outputed {
-					err := os.Remove(v.Path)
-					if err != nil {
-						return err
-					}
-					v.Outputed = true
-				}
-				if !allFiles[j].Outputed {
-					err := os.Remove(allFiles[j].Path)
-					if err != nil {
-						return err
-					}
-					allFiles[j].Outputed = true
-				}
-			}
-		}
-	}
-	return nil
-}*/
 
 func searchAllFiles(dirName string, allFiles *[]myFile) error {
 	files, err := os.ReadDir(dirName)
@@ -83,26 +42,38 @@ func searchAllFiles(dirName string, allFiles *[]myFile) error {
 }
 
 func doSomethingWithDuplicates(allFilesIn []myFile, f func(string) error) error {
-	allFiles := make([]myFile, len(allFilesIn))
+	var (
+		allFiles = make([]myFile, len(allFilesIn))
+		eg       = &errgroup.Group{}
+	)
 	copy(allFiles, allFilesIn)
 	for i, v := range allFiles {
 		for j := i + 1; j < len(allFiles); j++ {
-			if v.Name == allFiles[j].Name && v.Size == allFiles[j].Size {
-				if !v.Done {
-					err := f(v.Path)
-					if err != nil {
-						return err
-					}
-					v.Done = true
-				}
-				if !allFiles[j].Done {
-					err := f(allFiles[j].Path)
-					if err != nil {
-						return err
-					}
-					allFiles[j].Done = true
-				}
+			b := v
+			k := j
+			eg.Go(func() error {
+				return iteration(b, k, allFiles, f)
+			})
+		}
+	}
+	return eg.Wait()
+}
+
+func iteration(v myFile, j int, allFiles []myFile, f func(string) error) error {
+	if v.Name == allFiles[j].Name && v.Size == allFiles[j].Size {
+		if !v.Done {
+			err := f(v.Path)
+			if err != nil {
+				return err
 			}
+			v.Done = true
+		}
+		if !allFiles[j].Done {
+			err := f(allFiles[j].Path)
+			if err != nil {
+				return err
+			}
+			allFiles[j].Done = true
 		}
 	}
 	return nil
